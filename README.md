@@ -13,9 +13,9 @@
 - `indyscan-webapp` is web UI to browse and explore transaction data.
 - `indyscan-api` provides HTTP API to query transaction data.
 
-# Start locally in localhost
-The easiest way to get started with indy. Follow [this](start) to startup locally Indypool with Indyscan
-attached out of the box.  
+# Start locally in localhost to explore the Candy-dev Network
+The easiest way to get started with candy. Follow [this](start) to startup locally Indyscan
+attached to the Candy-Dev ledger out of the box.
 
 # Start in AWS
 Second option is running in AWS. Follow [this](start-aws) to startup Indypool with Indyscan
@@ -27,7 +27,7 @@ If
 - you want to run Indyscan against some particular Indy network
 - you want to deploy Indyscan on intranet
 you will find useful more info about the individual services you need and how to configure them.
-Before you dig in, try to dig into docker configuration provided [here](start) for running on localhost 
+Before you dig in, try to dig into docker configuration provided [here](start) for running on localhost
  you might just figure small modification you need to do for your use case. 
 
 ## Structure

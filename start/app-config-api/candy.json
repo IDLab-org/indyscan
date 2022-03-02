@@ -1,0 +1,20 @@
+[
+    {
+      "id": "CANDY_DEV",
+      "ui": {
+        "priority": 1,
+        "display": "CANdy-dev",
+        "display-long": "CANdy-dev Indy Network",
+        "description": "Development network for collaboration between Quebec, Ontario and British-Columbia.",
+        "tutorial": "",
+        "tutorial-link": "",
+        "logo-address": ""
+      },
+      "aliases": [
+        "CANDY_DEV"
+      ],
+      "es" : {
+        "index": "txs-candydev"
+      }
+    }
+]

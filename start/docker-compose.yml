@@ -22,14 +22,42 @@ x-ui-logging:
   driver: json-file
 
 services:
-  indyscan-indypool:
-    container_name: indyscanpool
-    image: ${INDYSCAN_INDYPOOL_IMAGE:-pstas/indypool:indyscanpool-v1.15.0}
+  indyscan-elasticsearch:
+    image: ${INDYSCAN_ELASTICSEARCH_IMAGE:-docker.elastic.co/elasticsearch/elasticsearch:7.6.1}
+    container_name: indyscan-elasticsearch
     logging: *es-logging
     networks:
-      - indyscan
+      - esnet
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - indyscan-es:/usr/share/elasticsearch/data
     ports:
-      - 9701-9708:9701-9708
+      - 9200:9200
+      - 9300:9300
+
+  indyscan-kibana:
+    container_name: indyscan-kibana
+    image: ${INDYSCAN_KIBANA_IMAGE:-docker.elastic.co/kibana/kibana:7.6.1}
+    logging: *es-logging
+    networks:
+      - esnet
+    environment:
+      - ELASTICSEARCH_HOSTS=http://indyscan-elasticsearch.esnet:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - indyscan-elasticsearch
 
   indyscan-daemon:
     restart: unless-stopped
@@ -38,12 +66,11 @@ services:
     logging: *service-logging
     depends_on:
       - indyscan-elasticsearch
-      - indyscan-indypool
     networks:
       - esnet
       - indyscan
     environment:
-      - WORKER_CONFIGS=/home/indyscan/indyscan-daemon/app-configs-docker/INDYSCANPOOL.json
+      - WORKER_CONFIGS=/home/indyscan/indyscan-daemon/app-configs-docker/candydev.json
       - LOG_LEVEL=info
       - LOG_HTTP_REQUESTS=true
       - LOG_HTTP_RESPONSES=true
@@ -60,7 +87,7 @@ services:
     container_name: indyscan-api
     logging: *service-logging
     environment:
-      - NETWORKS_CONFIG_PATH=${INDYSCAN_API_CONFIG_PATH:-/home/indyscan/indyscan-api/app-config-docker/localhost.json}
+      - NETWORKS_CONFIG_PATH=${INDYSCAN_API_CONFIG_PATH:-/home/indyscan/indyscan-api/app-config-docker/candy.json}
       - ES_URL=http://indyscan-elasticsearch.esnet:9200
       - AUTOSTART=true
       - LOG_LEVEL=debug
@@ -107,6 +134,13 @@ services:
       - 3710:3710
 
 networks:
+  esnet:
+    name: esnet
+    driver: bridge
   indyscan:
     name: indyscan
     driver: bridge
+
+volumes:
+  indyscan-es:
+    driver: local

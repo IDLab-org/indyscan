@@ -24,7 +24,7 @@ WORKDIR /usr/src/app/indyscan-api
 
 ENV ES_URL ${ES_URL}
 ENV PORT ${PORT:-"3708"}
-ENV NETWORKS_CONFIG_PATH ${NETWORKS_CONFIG_PATH:-"./config-networks/localhost.json"}
+ENV NETWORKS_CONFIG_PATH ${NETWORKS_CONFIG_PATH:-"./config-networks/candy.json"}
 ENV LOG_LEVEL ${LOG_LEVEL:-"info"}
 ENV LOG_HTTP_REQUESTS ${LOG_HTTP_REQUESTS:-"false"}
 ENV LOG_HTTP_RESPONSES ${LOG_HTTP_RESPONSES:-"false"}
